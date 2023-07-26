@@ -1,13 +1,15 @@
 // config/database.js
 const { Sequelize } = require('sequelize');
+const dotenv = require("dotenv")
+dotenv.config()
 
 const sequelize = new Sequelize(
-    "Ecommerce",
-    "root",
-    "password",
+    process.env.Database_Name,
+    process.env.UserName,
+    process.env.Password,
     {
-      host: "localhost",
-      dialect: "mysql",
+      host: process.env.Host,
+      dialect: process.env.Database,
     }
   );
   

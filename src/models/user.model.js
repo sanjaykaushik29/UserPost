@@ -8,16 +8,18 @@ const User = sequelize.define('User', {
     primaryKey: true,
     autoIncrement: true,
   },
-  name: {
+  userName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
+  password: { type: DataTypes.STRING },
+  token: { type: DataTypes.STRING },
+  roll: { type: DataTypes.ENUM("Admin","User","Seller"),defaultValue:"User", allowNull:false }
 });
-
-User.sequelize.sync();
 
 module.exports = User;
