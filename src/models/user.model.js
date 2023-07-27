@@ -8,7 +8,7 @@ const User = sequelize.define('User', {
     primaryKey: true,
     autoIncrement: true,
   },
-  userName: {
+  username: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -18,8 +18,8 @@ const User = sequelize.define('User', {
     unique: true
   },
   password: { type: DataTypes.STRING },
-  token: { type: DataTypes.STRING },
-  roll: { type: DataTypes.ENUM("Admin","User","Seller"),defaultValue:"User", allowNull:false }
+  roll: { type: DataTypes.ENUM("Admin","User","Seller"),defaultValue:"User", allowNull:false },
+  token : {type:DataTypes.STRING}
 });
 
 module.exports = User;
