@@ -1,9 +1,12 @@
 const router = require('express').Router()
-const user = require("../controller/product.controller")
+const product = require("../controller/product.controller")
 const seller = require("../controller/seller.controller")
+const user = require("../controller/user.controller")
+const verifyToken = require("../middleware/auth")
 
-router.use("/uploadProduct", user.create)
-router.use("/getProducts", user.get_users)
-router.use("/seller_signUp", seller.create)
-router.use("/getSellers", seller.get_users)
+router.use("/uploadProduct", product.create)
+router.use("/getProducts", product.get_products)
+router.use("/getSellerProduct",product.getsellerProduct)
+router.use("/getProductByCategory",product.getProductByCategory)
+router.use("/getAllCategory",product.get_allCategory)
 module.exports = router

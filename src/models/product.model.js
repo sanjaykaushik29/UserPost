@@ -17,8 +17,9 @@ const Product = sequelize.define('productDetails', {
     allowNull: false
   },
   category:{
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataTypes.ENUM("Mobile","Headphone","Car","Bike"),
+    defaultValue:"Headphone",
+    allowNull:false
   },
   price: {
     type: DataTypes.INTEGER,
@@ -28,9 +29,11 @@ const Product = sequelize.define('productDetails', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  sellerId:{
+    type: DataTypes.STRING,
+    allowNull:false
+  }
 });
 
-Product.belongsTo(Seller); // This sets up the foreign key in the `Product` table
-Seller.hasMany(Product);   // This sets up the association in the `Seller` model
 
 module.exports = Product;
