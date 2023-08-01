@@ -13,7 +13,6 @@ exports.initializeAdmin = async () => {
             const hashedPassword = await bcrypt.hash(`${config.AdminPassword}`, 10)
             const user = await User.create({ ...payload, password: hashedPassword });
             const token = jwt.sign({ userId: user.id }, secretKey)
-            console.log(hashedPassword);
             await User.update(  { token: token },
                 {
                   where: {

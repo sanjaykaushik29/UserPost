@@ -5,9 +5,8 @@ const secretKey = process.env.JWT_SECRET_KEY
 
 exports.create = async (req, res) => {
     try {
-
         const { username, email, password, roll } = req.body
-        if (!(username && email)) {
+        if (!(username && email && roll)) {
             res.status(400).send("All input is required");
         }
         const oldUser = await User.findOne({
@@ -19,10 +18,20 @@ exports.create = async (req, res) => {
             return res.status(409).send("User Already Exist. Please Login");
         }
         const payload = { username, email, roll }
+        let verified = null
+        if(roll == 'seller'){
+            verified = true
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ ...payload, password: hashedPassword });
+        const user = await User.create({ ...payload,isVerified : verified, password: hashedPassword });
         const jwtToken = jwt.sign({ userId: user.id }, secretKey)
-        res.send({ "message": "data save sucessfully", result: user, token: jwtToken })
+        await User.update(  { token: jwtToken },
+            {
+              where: {
+                id: user.id,
+              },
+            })
+        res.send({ "message": "data save sucessfully", result: user,password:password,token: jwtToken })
     } catch {
         res.status(500).json({ error: 'Error registering user' });
     }
@@ -30,22 +39,20 @@ exports.create = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const { username, email, password } = req.body
-        if (!username && !email) {
+        console.log(req.body);
+        const {email, password } = req.body
+        if ( !email) {
             res.status(400).json({ msg: "Username and Email is required." })
         }
         const user = await User.findOne({ where: { email } })
         if (!user) {
             res.status(401).json({ error: "Unauthorized User" })
         }
-
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            res.status(401).json({ error: "Invalandid Password"})
+            res.status(401).json({ error: "Invalid Password"})
         }
-        
-        const token = jwt.sign({ userId: user.id }, secretKey);
-        res.json({ token });
+        res.json({ token: user,password:password});
 
     } catch (error) {
         res.status(500).json({ error: 'Error logging in user' });
@@ -57,6 +64,6 @@ exports.get_users = async (req, res) => {
         const result = await User.findAll()
         res.send({ msg: "data fetched!!", count: result.length, result })
     } catch {
-        res.send("not fetchjed")
+        res.status(500).json({ error: error.message });
     }
 }

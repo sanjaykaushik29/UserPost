@@ -17,6 +17,9 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true
   },
+  isVerified :{
+    type: DataTypes.BOOLEAN
+  },
   password: { type: DataTypes.STRING },
   roll: { type: DataTypes.ENUM("Admin","User","Seller"),defaultValue:"User", allowNull:false },
   token : {type:DataTypes.STRING}

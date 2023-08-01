@@ -6,19 +6,19 @@ const port = process.env.Port
 const app = express();
 const {initializeAdmin} = require("./middleware/admin")
 app.use(bodyParser.json());
-// const { createProducts } = require('./src/controllers/product.controller');
+const cors = require('cors');
 
 
 const startServer = async () =>{
   try{
     await initializeAdmin()
-    // await createProducts()
+    app.use(cors())
     app.use("/api", router)
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
     });
-    
-  }
+
+    }
   catch(error){
     console.error('Error starting the server:', error);
   }
