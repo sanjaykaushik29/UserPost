@@ -1,20 +1,17 @@
 
 const Product = require("../models/product.model")
-const Seller = require("../models/user.model")
+const User = require("../models/user.model")
 require("../models/assosiations")
 exports.create = async (req, res) => {
     try {
 
         const { productName, description, category, price, inStock } = req.body
-        const seller = await Seller.findOne({ where: { id: req.query.id } })
-
+        const seller = await User.findOne({ where: { id: req.query.id } })
         if (seller.isVerified) {
             const payload = { productName, description, category, price, inStock, sellerId: seller.id }
             data = await Product.create(payload)
-
             res.send({ "message": "Product save sucessfully", result: data })
         }
-
     } catch {
         res.send("You are not a verified seller")
     }
@@ -23,9 +20,9 @@ exports.create = async (req, res) => {
 exports.getsellerProduct = async (req, res) => {
 
     try {
-        const seller = await Seller.findOne({ where: { id: req.query.id } })
+        const seller = await User.findOne({ where: { id: req.query.id } })
 
-        const userWithPosts = await Seller.findByPk(seller.id, { include: Product });
+        const userWithPosts = await User.findByPk(seller.id, { include: Product });
         if (userWithPosts.productDetails.length != 0) {
             res.send({ msg: "Product Fetched fetched!!", data: userWithPosts.productDetails })
         } else {
