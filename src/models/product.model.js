@@ -26,7 +26,7 @@ const Product = sequelize.define('Product', {
     allowNull: false
   },
   inStock: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BOOLEAN,
     allowNull: false
   },
   sellerId:{
