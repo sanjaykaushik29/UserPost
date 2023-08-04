@@ -13,6 +13,9 @@ const startServer = async () =>{
   try{
     await initializeAdmin()
     app.use(cors())
+    app.get("/", (req,res)=>{
+      res.send( 'running ok' );
+  })
     app.use("/api", router)
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
