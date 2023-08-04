@@ -59,7 +59,7 @@ exports.get_users = async (req, res) => {
     console.log(req.url);
     try {
         const result = await User.findAll()
-        res.json({ msg: "data fetched!!", count: result.length, result }).status(200)
+        res.json    ({ msg: "data fetched!!", count: result.length, result }).status(200)
     } catch {
         res.status(500).json({ error: error.message });
     }

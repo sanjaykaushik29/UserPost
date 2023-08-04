@@ -9,6 +9,7 @@ exports.create = async (req, res) => {
         const seller = await User.findOne({ where: { id: req.query.id } })
         if (seller.isVerified) {
             const payload = { productName, description, category, price, inStock, sellerId: seller.id }
+            console.log(".....>",payload);
             data = await Product.create(payload)
             res.send({ "message": "Product save sucessfully", result: data })
         }
