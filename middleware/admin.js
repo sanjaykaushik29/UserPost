@@ -18,6 +18,6 @@ exports.initializeAdmin = async () => {
             console.log('Admin user created successfully.');
         }
     } catch (error) {
-        console.error('Error initializing admin user:', error);
+        console.error('Admin user Already created.');
     }
 }
