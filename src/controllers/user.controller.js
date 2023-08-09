@@ -6,24 +6,32 @@ const secretKey = process.env.JWT_SECRET_KEY
 exports.create = async (req, res) => {
     try {
         const { username, email, password, role } = req.body
-        if (!(username && email && role)) {
+        console.log(req.body);
+        if (!(username && email && role && password)) {
             return res.status(400).send("All input is required");
         }
+        console.log(email, password);
+        
         const oldUser = await User.findOne({
             where: {
                 email: req.body.email
             }
         });
+        console.log("oldUser",oldUser);
         if (oldUser) {
             return res.status(409).send("User Already Exist. Please Login");
         }
         const payload = { username, email, role }
+        console.log(payload);
         let verified = null
         if(role.toString().toLowerCase() == 'seller'){
             verified = true
-        }            
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log("verified", verified);
         const user = await User.create({ ...payload,isVerified : verified, password: hashedPassword });
+        console.log("user", user.user);
         const jwtToken = jwt.sign({ userId: user.id }, secretKey)
         user.token = jwtToken
         await user.save()
