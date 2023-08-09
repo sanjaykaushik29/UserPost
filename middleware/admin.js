@@ -16,7 +16,7 @@ exports.initializeAdmin = async () => {
             user.token = token
             user.save()
             console.log('Admin user created successfully.');
-            return
+            return` `
         }
     } catch (error) {
         console.error('Admin user Already created.');

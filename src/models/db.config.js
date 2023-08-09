@@ -10,7 +10,13 @@ const sequelize = new Sequelize(
   {
     host: process.env.Host,
     dialect: process.env.Database,
-    port: 5432
+    port:5432,
+    dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false  // Only needed for self-signed certificates
+          }
+        }
   }
 );
 

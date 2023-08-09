@@ -61,6 +61,6 @@ exports.get_users = async (req, res) => {
         const result = await User.findAll()
         res.send({ msg: "data fetched!!", count: result.length, result }).status(200)
     } catch {
-        res.status(500).send({ error: error.message });
+        res.status(500).send({ error: "internal server error" });
     }
 }

@@ -1,23 +1,22 @@
 // app.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const router = require('./src/routers/index.routes')
-const port = process.env.Port 
+
+
 const app = express();
-// const {initializeAdmin} = require("./middleware/admin")
+
 
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 app.use(bodyParser.json());
 const cors = require('cors');
+const dotenv = require("dotenv")
+dotenv.config()
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content- Type, Accept");
-//   next();
-//   });
+const router = require('./src/routers/index.routes')
 
+const port = process.env.Port
 const options = {
   swaggerDefinition: {
     info: {
@@ -41,28 +40,21 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(specs, { explorer: true })
 );
-const startServer = async () =>{
-  try{
-    // await initializeAdmin()
-    app.use(cors({
-      origin : "*"
-    }))
-    app.get("/", (req,res)=>{
-      res.send( 'running ok' );
-  })
-    app.use("/api", router)
-    app.listen(port, () => {
-      console.log(`Server is running on http://localhost:${port}`);
-    });
 
-    }
-  catch(error){
-    console.error('Error starting the server:', error);
-  }
-}
 
-startServer();
 
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+app.use(cors({
+  origin: "*"
+}))
+app.get("/", (req, res) => {
+  res.send('running ok');
+})
+app.use("/api", router)
+
+require("./middleware/admin")
 
 module.exports = {
   specs,

@@ -35,7 +35,6 @@ exports.getsellerProduct = async (req, res) => {
 }
 
 
-
 exports.get_products = async (req, res) => {
     try {
         const result = await Product.findAll()
