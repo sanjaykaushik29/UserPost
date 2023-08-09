@@ -8,3 +8,5 @@ apiRouter.use('/user', router)
 apiRouter.use('/product', productRoutes)
 
 module.exports = apiRouter;
+
+

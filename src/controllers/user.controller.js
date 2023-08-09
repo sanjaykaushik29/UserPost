@@ -38,20 +38,20 @@ exports.login = async (req, res) => {
         console.log(req.body);
         const {email, password } = req.body
         if ( !email) {
-            res.status(400).json({ msg: "Username and Email is required." })
+            res.status(400).send({ msg: "Username and Email is required." })
         }
         const user = await User.findOne({ where: { email } })
         if (!user) {
-            res.status(401).json({ error: "Unauthorized User" })
+            res.status(401).send({ error: "Unauthorized User" })
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            res.status(401).json({ error: "Invalid Password"})
+            res.status(401).send({ error: "Invalid Password"})
         }
-        res.json({ token: user,password:password}).status(200);
+        res.send({ token: user,password:password}).status(200);
 
     } catch (error) {
-        res.status(500).json({ error: 'Error logging in user' });
+        res.send({ error: 'Error logging in user' }).status(500);
     }
 }
 
@@ -59,8 +59,8 @@ exports.get_users = async (req, res) => {
     console.log(req.url);
     try {
         const result = await User.findAll()
-        res.json    ({ msg: "data fetched!!", count: result.length, result }).status(200)
+        res.send({ msg: "data fetched!!", count: result.length, result }).status(200)
     } catch {
-        res.status(500).json({ error: error.message });
+        res.status(500).send({ error: error.message });
     }
 }

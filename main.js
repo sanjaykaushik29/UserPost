@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = require('./src/routers/index.routes')
-const port = process.env.Port || 3000
+const port = process.env.Port 
 const app = express();
 // const {initializeAdmin} = require("./middleware/admin")
 
@@ -12,6 +12,11 @@ const swaggerUi = require('swagger-ui-express');
 app.use(bodyParser.json());
 const cors = require('cors');
 
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content- Type, Accept");
+//   next();
+//   });
 
 const options = {
   swaggerDefinition: {
@@ -31,7 +36,6 @@ const options = {
 
 const specs = swaggerJsDoc(options);
 
-
 app.use(
   "/api-docs",
   swaggerUi.serve,
@@ -40,7 +44,9 @@ app.use(
 const startServer = async () =>{
   try{
     // await initializeAdmin()
-    app.use(cors())
+    app.use(cors({
+      origin : "*"
+    }))
     app.get("/", (req,res)=>{
       res.send( 'running ok' );
   })
